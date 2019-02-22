@@ -4,4 +4,4 @@ python3 cmpnet_test.py --model_path ../CMPnet_res/c2d/ \
 --n_tasks 1 --device 1 --data_path /media/arclabdl1/HD1/Ahmed/r-2d/ \
 --start_epoch 1 --memory_type res --env_type c2d --world_size 20
 --seen_N 10 --seen_NP 200 --seen_s 0 --seen_sp 4000 \
---unseen_N 10 --seen_NP 200 --seen_s 100 --seen_sp 0
+--unseen_N 10 --unseen_NP 200 --unseen_s 100 --unseen_sp 0
