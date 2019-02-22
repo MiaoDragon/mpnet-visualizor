@@ -55,14 +55,14 @@ def main(args):
         IsInCollision = plan_s2d.IsInCollision
         normalize = utility_s2d.normalize
         unnormalize = utility_s2d.unnormalize
-        mpNet.encoder = CAE()
-        mpNet.mlp = model(args.mlp_input_size, args.output_size)
+        mpNet.encoder = CAE.Encoder()
+        mpNet.mlp = model.MLP(args.mlp_input_size, args.output_size)
     elif args.env_type == 'c2d':
         IsInCollision = plan_c2d.IsInCollision
         normalize = utility_c2d.normalize
         unnormalize = utility_c2d.unnormalize
-        mpNet.encoder = CAE()
-        mpNet.mlp = model_c2d(args.mlp_input_size, args.output_size)
+        mpNet.encoder = CAE.Encoder()
+        mpNet.mlp = model_c2d.MLP(args.mlp_input_size, args.output_size)
 
     # load previously trained model if start epoch > 0
     model_path='cmpnet_epoch_%d.pkl' %(args.start_epoch)
