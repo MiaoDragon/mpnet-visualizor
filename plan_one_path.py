@@ -24,6 +24,22 @@ def main(args):
     # Build the models
     if torch.cuda.is_available():
         torch.cuda.set_device(args.device)
+    # setup evaluation function, and load function
+    if args.env_type == 's2d':
+        IsInCollision = plan_s2d.IsInCollision
+        load_test_dataset = data_loader.load_test_dataset
+    elif args.env_type == 'c2d':
+        IsInCollision = plan_c2d.IsInCollision
+        load_test_dataset = data_loader.load_test_dataset
+    elif args.env_type == 'r2d':
+        IsInCollision = plan_r2d.IsInCollision
+        load_test_dataset = data_loader_r2d.load_test_dataset
+        normalize = utility_r2d.normalize
+        unnormalize = utility_r2d.unnormalize
+        CAE = CAE_2d
+        MLP = model.MLP
+        args.world_size = [20., 20., np.pi]
+        
     if args.memory_type == 'res':
         mpNet = End2EndMPNet(args.total_input_size, args.AE_input_size, args.mlp_input_size, \
                     args.output_size, 'deep', args.n_tasks, args.n_memories, args.memory_strength, 1, \
@@ -47,21 +63,7 @@ def main(args):
         mpNet.set_opt(torch.optim.Adagrad, lr=args.learning_rate)
     if args.start_epoch > 0:
         load_opt_state(mpNet, os.path.join(args.model_path, model_path))
-    # setup evaluation function, and load function
-    if args.env_type == 's2d':
-        IsInCollision = plan_s2d.IsInCollision
-        load_test_dataset = data_loader.load_test_dataset
-    elif args.env_type == 'c2d':
-        IsInCollision = plan_c2d.IsInCollision
-        load_test_dataset = data_loader.load_test_dataset
-    elif args.env_type == 'r2d':
-        IsInCollision = plan_r2d.IsInCollision
-        load_test_dataset = data_loader_r2d.load_test_dataset
-        normalize = utility_r2d.normalize
-        unnormalize = utility_r2d.unnormalize
-        CAE = CAE_2d
-        MLP = model.MLP
-        args.world_size = [20., 20., np.pi]
+
     # load train and test data
     print('loading...')
     test_data = load_test_dataset(N=args.env_idx, NP=args.path_idx, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
