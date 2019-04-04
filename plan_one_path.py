@@ -25,8 +25,9 @@ def main(args):
     if torch.cuda.is_available():
         torch.cuda.set_device(args.device)
     if args.memory_type == 'res':
-        mpNet = End2EndMPNet(args.mlp_input_size, args.output_size, 'deep', \
-                    args.n_tasks, args.n_memories, args.memory_strength, 1)
+        mpNet = End2EndMPNet(args.total_input_size, args.AE_input_size, args.mlp_input_size, \
+                    args.output_size, 'deep', args.n_tasks, args.n_memories, args.memory_strength, 1, \
+                    CAE, MLP)
     elif args.memory_type == 'rand':
         #mpNet = End2EndMPNet_rand(args.mlp_input_size, args.output_size, 'deep', \
         #            args.n_tasks, args.n_memories, args.memory_strength, args.grad_step)
