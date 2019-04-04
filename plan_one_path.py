@@ -32,7 +32,7 @@ def main(args):
         #            args.n_tasks, args.n_memories, args.memory_strength, args.grad_step)
         pass
     # load previously trained model if start epoch > 0
-    model_path = args.model_path + args.model_name
+    model_path = 'cmpnet_epoch_%d.pkl' %(args.start_epoch)
     load_net_state(mpNet, model_path)
     # set seed after loading
     torch.manual_seed(torch_seed)
@@ -63,7 +63,7 @@ def main(args):
         args.world_size = [20., 20., np.pi]
     # load train and test data
     print('loading...')
-    test_data = load_test_dataset(N=0, NP=0, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
+    test_data = load_test_dataset(N=args.env_idx, NP=args.path_idx, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
     # test
     # testing
     print('testing...')
@@ -92,6 +92,7 @@ parser.add_argument('--env_type', type=str, default='s2d', help='s2d for simple 
 parser.add_argument('--world_size', type=int, default=50, help='boundary of world')
 parser.add_argument('--env_idx', type=int, default=0, help='which env to visualize?')
 parser.add_argument('--path_idx', type=int, default=0, help='which path to visualize?')
+parser.add_argument('--start_epoch', type=int, default=0)
 args = parser.parse_args()
 print(args)
 main(args)
