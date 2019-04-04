@@ -5,14 +5,14 @@ import argparse
 import os
 import torch
 from gem_eval import eval_tasks
-import plan_s2d, plan_c2d
+import plan_s2d, plan_c2d, plan_r3d, plan_r2d
 import data_loader
 from torch.autograd import Variable
 import copy
 import os
 import random
 from utility import *
-
+import utility_s2d, utility_c2d, utility_r3d, utility_r2d
 def main(args):
     # set seed
     torch_seed = np.random.randint(low=0, high=1000)
@@ -53,6 +53,14 @@ def main(args):
     elif args.env_type == 'c2d':
         IsInCollision = plan_c2d.IsInCollision
         load_test_dataset = data_loader.load_test_dataset
+    elif args.env_type == 'r2d':
+        IsInCollision = plan_r2d.IsInCollision
+        load_test_dataset = data_loader_r2d.load_test_dataset
+        normalize = utility_r2d.normalize
+        unnormalize = utility_r2d.unnormalize
+        CAE = CAE_2d
+        MLP = model.MLP
+        args.world_size = [20., 20., np.pi]
     # load train and test data
     print('loading...')
     test_data = load_test_dataset(N=0, NP=0, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
@@ -60,9 +68,10 @@ def main(args):
     # testing
     print('testing...')
     # unnormalize function
+    normalize_func=lambda x: normalize(x, args.world_size)
     unnormalize_func=lambda x: unnormalize(x, args.world_size)
     path_file = os.path.join(args.model_path,'path_env%d_path%d.p' % (args.env_idx,args.path_idx))
-    eval_tasks(mpNet, test_data, path_file, IsInCollision, unnormalize_func)
+    eval_tasks(mpNet, test_data, path_file, IsInCollision, normalize_func, unnormalize_func)
 
 parser = argparse.ArgumentParser()
 # for training

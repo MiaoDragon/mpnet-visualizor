@@ -9,7 +9,7 @@ import math
 import time
 from plan_general import *
 
-def eval_tasks(mpNet, test_data, filename, IsInCollision, unnormalize_func=lambda x: x):
+def eval_tasks(mpNet, test_data, filename, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
     obc, obs, paths, path_lengths = test_data
     obs = torch.from_numpy(obs)
     fes_env = []   # list of list
@@ -53,7 +53,7 @@ def eval_tasks(mpNet, test_data, filename, IsInCollision, unnormalize_func=lambd
                     elif (t > 3):
                         step_sz = 0.02
                     path = neural_replan(mpNet, path, obc[i], obs[i], IsInCollision, \
-                                         unnormalize_func, t==0, step_sz=step_sz)
+                                         normalize_func, unnormalize_func, t==0, step_sz=step_sz)
                     path = lvc(path, obc[i], IsInCollision, step_sz=step_sz)
                     if feasibility_check(path, obc[i], IsInCollision, step_sz=0.01):
                         fp = 1
@@ -62,5 +62,13 @@ def eval_tasks(mpNet, test_data, filename, IsInCollision, unnormalize_func=lambd
     if path is None:
         return 0
     path = np.array([p.numpy() for p in path])
-    pickle.dump(path, open(filename, "wb" ))
+    # write as txt files
+    file = open(filename, 'w')
+    file.write('planned path:')
+    for p in path:
+        file.write('(' + ','.join(p) + ')\n')
+    #pickle.dump(path, open(filename, "wb" ))
+    file.write('data:')
+    for i in range(len(path_lengths[0][0])):
+        file.write('(' + ','.join(paths[0][0][i]) + ')\n')
     return 1
