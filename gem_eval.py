@@ -62,13 +62,14 @@ def eval_tasks(mpNet, test_data, filename, IsInCollision, normalize_func = lambd
     if path is None:
         return 0
     path = np.array([p.numpy() for p in path])
+    pickle.dump(path, open(filename, "wb" ))
     # write as txt files
-    file = open(filename, 'w')
-    file.write('planned path:')
-    for p in path:
-        file.write('(' + ','.join(p) + ')\n')
-    #pickle.dump(path, open(filename, "wb" ))
-    file.write('data:')
-    for i in range(len(path_lengths[0][0])):
-        file.write('(' + ','.join(paths[0][0][i]) + ')\n')
+    #file = open(filename, 'w')
+    #file.write('planned path:')
+    #for p in path:
+    #    file.write('(' + ','.join(p) + ')\n')
+
+    #file.write('data:')
+    #for i in range(len(path_lengths[0][0])):
+    #    file.write('(' + ','.join(paths[0][0][i]) + ')\n')
     return 1

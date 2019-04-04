@@ -71,7 +71,7 @@ def main(args):
 
     # load train and test data
     print('loading...')
-    test_data = load_test_dataset(N=args.env_idx, NP=args.path_idx, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
+    test_data = load_test_dataset(N=1, NP=1, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
     # test
     # testing
     print('testing...')
