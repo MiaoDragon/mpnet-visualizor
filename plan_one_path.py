@@ -55,7 +55,7 @@ def main(args):
         pass
     # load previously trained model if start epoch > 0
     model_path = 'cmpnet_epoch_%d.pkl' %(args.start_epoch)
-    load_net_state(mpNet, model_path)
+    load_net_state(mpNet, os.path.join(args.model_path, model_path))
     # set seed after loading
     torch.manual_seed(torch_seed)
     np.random.seed(np_seed)
