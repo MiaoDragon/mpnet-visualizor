@@ -30,23 +30,23 @@ def load_dataset(N=100,NP=4000,folder='../data/simple/',s=0):
 	path_lengths=np.zeros((N,NP),dtype=np.int8)
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				path_lengths[i][j]=len(path)
 				if len(path)> max_length:
 					max_length=len(path)
 
 
-	paths=np.zeros((N,NP,max_length,3), dtype=np.float32)   ## padded paths
+	paths=np.zeros((N,NP,max_length,2), dtype=np.float32)   ## padded paths
 
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				for k in range(0,len(path)):
 					paths[i][j][k]=path[k]
 
@@ -99,22 +99,22 @@ def load_raw_dataset(N=100,NP=4000,s=0,sp=0,folder='../data/simple/'):
 	path_lengths=np.zeros((N,NP),dtype=np.int8)
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				path_lengths[i][j]=len(path)
 				if len(path)> max_length:
 					max_length=len(path)
 
-	paths=np.zeros((N,NP,max_length,3), dtype=np.float32)   ## padded paths
+	paths=np.zeros((N,NP,max_length,2), dtype=np.float32)   ## padded paths
 
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				for k in range(0,len(path)):
 					paths[i][j][k]=path[k]
 	return 	obc,obs,paths,path_lengths
@@ -147,23 +147,23 @@ def load_test_dataset(N=100,NP=200, s=0,sp=4000, folder='../data/simple/'):
 	path_lengths=np.zeros((N,NP),dtype=np.int8)
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				path_lengths[i][j]=len(path)
 				if len(path)> max_length:
 					max_length=len(path)
 
 
-	paths=np.zeros((N,NP,max_length,3), dtype=np.float32)   ## padded paths
+	paths=np.zeros((N,NP,max_length,2), dtype=np.float32)   ## padded paths
 
 	for i in range(0,N):
 		for j in range(0,NP):
-			fname=folder+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
+			fname=folder+'env/'+'e'+str(i+s)+'/path'+str(j+sp)+'.dat'
 			if os.path.isfile(fname):
 				path=np.fromfile(fname)
-				path=path.reshape(len(path)//3,3)
+				path=path.reshape(len(path)//2,2)
 				for k in range(0,len(path)):
 					paths[i][j][k]=path[k]
 

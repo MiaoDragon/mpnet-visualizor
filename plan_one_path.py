@@ -13,6 +13,7 @@ import os
 import random
 from utility import *
 import utility_s2d, utility_c2d, utility_r3d, utility_r2d
+import data_loader_2d, data_loader_r3d, data_loader_r2d
 def main(args):
     # set seed
     torch_seed = np.random.randint(low=0, high=1000)
@@ -39,7 +40,7 @@ def main(args):
         CAE = CAE_2d
         MLP = model.MLP
         args.world_size = [20., 20., np.pi]
-        
+
     if args.memory_type == 'res':
         mpNet = End2EndMPNet(args.total_input_size, args.AE_input_size, args.mlp_input_size, \
                     args.output_size, 'deep', args.n_tasks, args.n_memories, args.memory_strength, 1, \

@@ -17,6 +17,7 @@ def load_dataset(N=100,NP=4000,folder='../data/simple/',s=0):
 	# load data as [path]
 	# for each path, it is
 	# [[input],[target],[env_id]]
+	print('load 3d data...')
 	obs = []
 	# add start s
 	for i in range(0,N):
@@ -74,17 +75,17 @@ def load_dataset(N=100,NP=4000,folder='../data/simple/',s=0):
 	# here the first item of data is index in obs
 	# return obs, list(zip(*data))
 def load_raw_dataset(N=100,NP=4000,s=0,sp=0,folder='../data/simple/'):
-	obc=np.zeros((N,7,2),dtype=np.float32)
+	obc=np.zeros((N,10,3),dtype=np.float32)
 	temp=np.fromfile(folder+'obs.dat')
-	obs=temp.reshape(len(temp)//2,2)
+	obs=temp.reshape(len(temp)//3,3)
 
 	temp=np.fromfile(folder+'obs_perm2.dat',np.int32)
-	perm=temp.reshape(77520,7)
+	perm=temp.reshape(184756,10)
 
 	## loading obstacles
 	for i in range(0,N):
-		for j in range(0,7):
-			for k in range(0,2):
+		for j in range(0,10):
+			for k in range(0,3):
 				obc[i][j][k]=obs[perm[i+s][j]][k]
 
 
@@ -122,17 +123,17 @@ def load_raw_dataset(N=100,NP=4000,s=0,sp=0,folder='../data/simple/'):
 #Unseen_environments==> N=10, NP=2000,s=100, sp=0
 #seen_environments==> N=100, NP=200,s=0, sp=4000
 def load_test_dataset(N=100,NP=200, s=0,sp=4000, folder='../data/simple/'):
-	obc=np.zeros((N,7,2),dtype=np.float32)
+	obc=np.zeros((N,10,3),dtype=np.float32)
 	temp=np.fromfile(folder+'obs.dat')
-	obs=temp.reshape(len(temp)//2,2)
+	obs=temp.reshape(len(temp)//3,3)
 
 	temp=np.fromfile(folder+'obs_perm2.dat',np.int32)
-	perm=temp.reshape(77520,7)
+	perm=temp.reshape(184756,10)
 
 	## loading obstacles
 	for i in range(0,N):
-		for j in range(0,7):
-			for k in range(0,2):
+		for j in range(0,10):
+			for k in range(0,3):
 				obc[i][j][k]=obs[perm[i+s][j]][k]
 
 
