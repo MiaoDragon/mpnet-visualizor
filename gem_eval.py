@@ -64,11 +64,11 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                     if feasibility_check(path, obc[i], IsInCollision, step_sz=0.01):
                         fp = 1
                         print('feasible, ok!')
-                        for p in path:
-                            IsInCollision(p.numpy(), obc[i], True)
                         break
     if path is None:
         return 0
+    for p in path:
+        IsInCollision(p.numpy(), obc[i], True)
     path = np.array([p.numpy() for p in path])
     pickle.dump(path, open(path_file, "wb" ))
     path = np.array(paths[i][j])
