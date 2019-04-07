@@ -67,9 +67,11 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                         break
     if path is None:
         return 0
-    for p in path:
-        IsInCollision(p.numpy(), obc[i], True)
-    print(path)
+    #for p in path:
+    #    IsInCollision(p.numpy(), obc[i], True)
+    for p in paths[i][j]:
+        IsInCollision(p, obc[i], True)
+
     path = np.array([p.numpy() for p in path])
     pickle.dump(path, open(path_file, "wb" ))
     path = np.array(paths[i][j])
