@@ -59,6 +59,29 @@ def IsInCollision(stateIn,obc, show=False):
     if show:
         print('corner:')
         print(robot_corner)
+    print('obc corner:')
+    for i in range(0,7):
+        cf=True
+
+        obs_corner=np.zeros((4,2),dtype=np.float32)
+        obs_axis=np.zeros((2,2),dtype=np.float32)
+        obs_orign=np.zeros(2,dtype=np.float32)
+        X=np.zeros(2,dtype=np.float32)
+        Y=np.zeros(2,dtype=np.float32)
+        length2=np.zeros(2,dtype=np.float32)
+
+        X[0]=1.0*size/2.0
+        X[1]=0.0
+        Y[0]=0.0
+        Y[1]=1.0*size/2.0
+
+        for j in range(0,2):
+            obs_corner[0][j]=obc[i][j]-X[j]-Y[j]
+            obs_corner[1][j]=obc[i][j]+X[j]-Y[j]
+            obs_corner[2][j]=obc[i][j]+X[j]+Y[j]
+            obs_corner[3][j]=obc[i][j]-X[j]+Y[j]
+        print(obs_corner)
+
     for i in range(0,7):
         cf=True
 
