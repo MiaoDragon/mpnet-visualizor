@@ -56,8 +56,6 @@ def IsInCollision(stateIn,obc):
 
     robot_orign[0]=robot_corner[0][0]*robot_axis[0][0]+ robot_corner[0][1]*robot_axis[0][1]
     robot_orign[1]=robot_corner[0][0]*robot_axis[1][0]+ robot_corner[0][1]*robot_axis[1][1]
-    print('obc:')
-    print(obc)
     print('corner:')
     print(robot_corner)
     for i in range(0,7):
