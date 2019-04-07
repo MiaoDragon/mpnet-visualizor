@@ -1,4 +1,4 @@
-python3 plan_one_path.py --model_path ../MPnet_res/r2d/ \
+python3 plan_one_path.py --model_path ../PointMPnet_res/r2d/ \
 --learning_rate 0.01 \
 --memory_strength 0.5 --n_memories 10000 \
 --n_tasks 1 --device 1 --data_path /media/arclabdl1/HD1/Ahmed/rigid-body/dataset/ \
