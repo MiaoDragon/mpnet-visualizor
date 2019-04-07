@@ -46,6 +46,8 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                 MAX_NEURAL_REPLAN = 11
                 print('check start')
                 print(IsInCollision(path[0].numpy(), obc[i]))
+                print('check end')
+                print(IsInCollision(path[1].numpy(), obc[i]))
                 for t in range(MAX_NEURAL_REPLAN):
                 # adaptive step size on replanning attempts
                     if (t == 2):
