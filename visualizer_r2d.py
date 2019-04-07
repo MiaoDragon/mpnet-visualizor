@@ -43,7 +43,7 @@ plt.scatter(x=D[:,0], y=D[:,1], s=0.5)
 
 def draw_robot(path, color):
     print(path)
-    r = patches.Rectangle((path[0]-2/2,path[1]-5/2),2,5,linewidth=.5,edgecolor=color,facecolor='none')
+    r = patches.Rectangle((path[0]-5/2,path[1]-2/2),5,2,linewidth=.5,edgecolor=color,facecolor='none')
     t = mpl.transforms.Affine2D().rotate_deg_around(path[0], path[1], path[2]) + ax.transData
     r.set_transform(t)
     ax.add_patch(r)
