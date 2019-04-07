@@ -63,7 +63,7 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                         fp = 1
                         print('feasible, ok!')
                         for p in path:
-                            IsInCollision(p.numpy(), obc[i])
+                            IsInCollision(p.numpy(), obc[i], True)
                         break
     if path is None:
         return 0

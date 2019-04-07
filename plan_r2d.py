@@ -20,7 +20,7 @@ def line_intersect(a0, a1, b0, b1):
         return False  # collinear
     return True
 
-def IsInCollision(stateIn,obc):
+def IsInCollision(stateIn,obc, show=False):
     # if origin is out of world, return True
     if abs(stateIn[0]) > 20. or abs(stateIn[1]) > 20.:
         return True
@@ -56,8 +56,9 @@ def IsInCollision(stateIn,obc):
 
     robot_orign[0]=robot_corner[0][0]*robot_axis[0][0]+ robot_corner[0][1]*robot_axis[0][1]
     robot_orign[1]=robot_corner[0][0]*robot_axis[1][0]+ robot_corner[0][1]*robot_axis[1][1]
-    print('corner:')
-    print(robot_corner)
+    if show:
+        print('corner:')
+        print(robot_corner)
     for i in range(0,7):
         cf=True
 
