@@ -69,6 +69,7 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
         return 0
     #for p in path:
     #    IsInCollision(p.numpy(), obc[i], True)
+    print(feasibility_check(torch.from_numpy(paths[i][j]), obc[i], IsInCollision, step_sz=0.01))
     for p in paths[i][j]:
         IsInCollision(p, obc[i], True)
 
