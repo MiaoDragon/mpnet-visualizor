@@ -56,10 +56,10 @@ def IsInCollision(stateIn,obc, show=False):
 
     robot_orign[0]=robot_corner[0][0]*robot_axis[0][0]+ robot_corner[0][1]*robot_axis[0][1]
     robot_orign[1]=robot_corner[0][0]*robot_axis[1][0]+ robot_corner[0][1]*robot_axis[1][1]
-    if show:
+    if False:
         print('corner:')
         print(robot_corner)
-    if show:
+    if False:
         print('obc corner:')
         for i in range(0,7):
             cf=True

@@ -44,10 +44,6 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                         torch.from_numpy(paths[i][j][path_lengths[i][j]-1]).type(torch.FloatTensor)]
                 step_sz = DEFAULT_STEP
                 MAX_NEURAL_REPLAN = 11
-                print('check start')
-                print(IsInCollision(path[0].numpy(), obc[i]))
-                print('check end')
-                print(IsInCollision(path[1].numpy(), obc[i]))
                 for t in range(MAX_NEURAL_REPLAN):
                 # adaptive step size on replanning attempts
                     if (t == 2):
@@ -59,7 +55,6 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                     path = neural_replan(mpNet, path, obc[i], obs[i], IsInCollision, \
                                          normalize_func, unnormalize_func, t==0, step_sz=step_sz)
                     path = lvc(path, obc[i], IsInCollision, step_sz=step_sz)
-                    print('final check:')
 
                     if feasibility_check(path, obc[i], IsInCollision, step_sz=0.01):
                         fp = 1
@@ -69,9 +64,6 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
         return 0
     #for p in path:
     #    IsInCollision(p.numpy(), obc[i], True)
-    print(feasibility_check(torch.from_numpy(paths[i][j]), obc[i], IsInCollision, step_sz=0.01))
-    for p in paths[i][j]:
-        IsInCollision(p, obc[i], True)
 
     path = np.array([p.numpy() for p in path])
     pickle.dump(path, open(path_file, "wb" ))
