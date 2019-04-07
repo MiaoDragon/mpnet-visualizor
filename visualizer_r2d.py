@@ -1,11 +1,12 @@
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import struct
 import numpy as np
 import argparse
-from open3d import *
 import pickle
+import matplotlib.patches as patches
 print('--in_path: path to load point clouds')
 print('--out_path: path to store screenshots')
 print('--N: number of points in the point cloud')
@@ -22,7 +23,6 @@ parser.add_argument('--true_path', type=str, default='.', help='file storing the
 parser.add_argument('--N', type=int, default=5, help='number of points in the point cloud')
 parser.add_argument('--dim', type=int, default=2, help='dimension of point cloud')
 args = parser.parse_args()
-
 shape = (args.N, args.dim)
 in_path = args.in_path
 out_path = args.out_path
@@ -31,47 +31,31 @@ in_folder = in_path
 out_folder = out_path
 D = []
 
+fig, ax = plt.subplots(1)
+
 in_obs_file_name = in_folder+'obc'+str(args.env)+'.dat'
 in_obs_file = open(in_obs_file_name, 'rb')
 b_read = in_obs_file.read()
 D = struct.unpack('d'*(args.N*args.dim), b_read)
 D = np.array(D).reshape(shape)
-# append zero to z dimension if 2 dim
-if args.dim == 2:
-    D = np.concatenate((D, np.zeros((shape[0],1))), axis=1)
-u = np.mean(D, axis=0)
-pcd = PointCloud()
-pcd.points = Vector3dVector(D)
-# add path information
-# path is numpy array of dimension l*dim
-# planned path
+
+plt.scatter(x=D[:,0], y=D[:,1], s=0.5)
+
+def draw_robot(path, color):
+    r = patches.Rectangle((path[0]-2/2,path[1]-5/2),2,5,linewidth=.5,edgecolor=color,facecolor='none')
+    t = mpl.transforms.Affine2D().rotate_deg_around(path[0], path[1], path[2]) + ax.transData
+    r.set_transform(t)
+    ax.add_patch(r)
 path = pickle.load( open(args.line_path, 'rb') )
-if args.dim == 2:
-    path = np.concatenate((path, np.zeros((path.shape[0],1))), axis=1)
-line_set = LineSet()
-line_set.points = Vector3dVector(path)
-lines = [[i,i+1] for i in range(len(path.shape[0])-1)]
-line_set.lines = Vector2iVector(lines)
-colors = [[1, 0, 0] for i in range(len(lines))]
-line_set.colors = Vector3dVector(colors)
+for i in range(len(path)):
+    draw_robot(path[i], 'r')
+
 # ground truth
 path = pickle.load( open(args.true_path, 'rb') )
-if args.dim == 2:
-    path = np.concatenate((path, np.zeros((path.shape[0],1))), axis=1)
-ground_line_set = LineSet()
-ground_line_set.points = Vector3dVector(path)
-lines = [[i,i+1] for i in range(len(path.shape[0])-1)]
-ground_line_set.lines = Vector2iVector(lines)
-colors = [[0, 1, 0] for i in range(len(lines))]
-ground_line_set.colors = Vector3dVector(colors)
+for i in range(len(path)):
+    draw_robot(path[i], 'b')
+plt.show()
 # Visualizer
-vis = Visualizer()
-vis.create_window()
-vis.add_geometry(pcd)
-vis.add_geometry(line_set)
-vis.add_geometry(ground_line_set)
-vis.run()
-depth = vis.capture_screen_float_buffer()
-plt.imsave(out_folder+'obc'+str(i)+'.png', np.asarray(depth), dpi=1)
-vis.destroy_window()
+#plt.imsave(out_folder+'obc'+str(i)+'.png', np.asarray(depth), dpi=1)
+#vis.destroy_window()
 in_obs_file.close()
