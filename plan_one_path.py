@@ -44,7 +44,10 @@ def main(args):
         normalize = utility_r2d.normalize
         unnormalize = utility_r2d.unnormalize
         CAE = CAE_2d
-        MLP = model_c2d.MLP
+        if args.model_type == 'simple':
+            MLP = model_c2d.MLP
+        elif args.model_type == 'complex':
+            MLP = model.MLP
         args.world_size = [20., 20., np.pi]
 
     if args.memory_type == 'res':
