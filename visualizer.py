@@ -18,6 +18,7 @@ parser.add_argument('--out_path', type=str, default='../../../results/screenshot
 parser.add_argument('--env', type=int, default=0, help='env index')
 parser.add_argument('--path_i', type=int, default=0, help='path index')
 parser.add_argument('--line_path', type=str, default='.', help='file storing the path')
+parser.add_argument('--true_path', type=str, default='.', help='file storing the path')
 parser.add_argument('--N', type=int, default=5, help='number of points in the point cloud')
 parser.add_argument('--dim', type=int, default=2, help='dimension of point cloud')
 args = parser.parse_args()
@@ -43,6 +44,7 @@ pcd = PointCloud()
 pcd.points = Vector3dVector(D)
 # add path information
 # path is numpy array of dimension l*dim
+# planned path
 path = pickle.load( open(args.line_path, 'rb') )
 if args.dim == 2:
     path = np.concatenate((path, np.zeros((path.shape[0],1))), axis=1)
@@ -52,11 +54,22 @@ lines = [[i,i+1] for i in range(len(path.shape[0])-1)]
 line_set.lines = Vector2iVector(lines)
 colors = [[1, 0, 0] for i in range(len(lines))]
 line_set.colors = Vector3dVector(colors)
+# ground truth
+path = pickle.load( open(args.true_path, 'rb') )
+if args.dim == 2:
+    path = np.concatenate((path, np.zeros((path.shape[0],1))), axis=1)
+ground_line_set = LineSet()
+ground_line_set.points = Vector3dVector(path)
+lines = [[i,i+1] for i in range(len(path.shape[0])-1)]
+ground_line_set.lines = Vector2iVector(lines)
+colors = [[0, 1, 0] for i in range(len(lines))]
+ground_line_set.colors = Vector3dVector(colors)
 # Visualizer
 vis = Visualizer()
 vis.create_window()
 vis.add_geometry(pcd)
 vis.add_geometry(line_set)
+vis.add_geometry(ground_line_set)
 vis.run()
 depth = vis.capture_screen_float_buffer()
 plt.imsave(out_folder+'obc'+str(i)+'.png', np.asarray(depth), dpi=1)

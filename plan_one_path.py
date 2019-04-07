@@ -4,6 +4,7 @@ import Model.model as model
 import Model.model_c2d as model_c2d
 import Model.AE.CAE_r3d as CAE_r3d
 import Model.AE.CAE as CAE_2d
+import Model.AE.simplePointnetAE as CAE_2d
 import numpy as np
 import argparse
 import os
@@ -18,6 +19,7 @@ import random
 from utility import *
 import utility_s2d, utility_c2d, utility_r3d, utility_r2d
 import data_loader_2d, data_loader_r3d, data_loader_r2d
+import pickle
 def main(args):
     # set seed
     torch_seed = np.random.randint(low=0, high=1000)
@@ -42,7 +44,7 @@ def main(args):
         normalize = utility_r2d.normalize
         unnormalize = utility_r2d.unnormalize
         CAE = CAE_2d
-        MLP = model.MLP
+        MLP = model_c2d.MLP
         args.world_size = [20., 20., np.pi]
 
     if args.memory_type == 'res':
@@ -78,8 +80,9 @@ def main(args):
     # unnormalize function
     normalize_func=lambda x: normalize(x, args.world_size)
     unnormalize_func=lambda x: unnormalize(x, args.world_size)
+    truth_file = os.path.join(args.model_path,'true_path_env%d_path%d.p' % (args.env_idx,args.path_idx))
     path_file = os.path.join(args.model_path,'path_env%d_path%d.p' % (args.env_idx,args.path_idx))
-    eval_tasks(mpNet, test_data, path_file, IsInCollision, normalize_func, unnormalize_func)
+    eval_tasks(mpNet, test_data, truth_file, path_file, IsInCollision, normalize_func, unnormalize_func)
 
 parser = argparse.ArgumentParser()
 # for training

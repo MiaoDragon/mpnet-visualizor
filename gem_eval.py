@@ -9,7 +9,7 @@ import math
 import time
 from plan_general import *
 
-def eval_tasks(mpNet, test_data, filename, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
+def eval_tasks(mpNet, test_data, truth_file, path_file, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
     obc, obs, paths, path_lengths = test_data
     obs = torch.from_numpy(obs)
     fes_env = []   # list of list
@@ -62,7 +62,9 @@ def eval_tasks(mpNet, test_data, filename, IsInCollision, normalize_func = lambd
     if path is None:
         return 0
     path = np.array([p.numpy() for p in path])
-    pickle.dump(path, open(filename, "wb" ))
+    pickle.dump(path, open(path_file, "wb" ))
+    path = np.array(paths[i][j])
+    pickle.dump(path, open(true_file, 'wb'))
     # write as txt files
     #file = open(filename, 'w')
     #file.write('planned path:')
