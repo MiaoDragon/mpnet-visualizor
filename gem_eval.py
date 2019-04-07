@@ -9,7 +9,7 @@ import math
 import time
 from plan_general import *
 
-def eval_tasks(mpNet, test_data, truth_file, path_file, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
+def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
     obc, obs, paths, path_lengths = test_data
     obs = torch.from_numpy(obs)
     fes_env = []   # list of list
