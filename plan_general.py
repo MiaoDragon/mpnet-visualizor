@@ -95,10 +95,11 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
         else:
             # plan mini path
             # plan from this start to the end
-            mini_path = neural_replanner2(mpNet, start, path[-1], obc, obs, IsInCollision, \
+            mini_path = neural_replanner2(mpNet, path[0], path[-1], obc, obs, IsInCollision, \
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
-                new_path += mini_path[1:]  # take out start point
+                new_path = mini_path
+                #new_path += mini_path[1:]  # take out start point
                 break
             else:
                 new_path += path[i+1:]     # just take in the rest of the path
