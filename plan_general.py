@@ -95,11 +95,10 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
         else:
             # plan mini path
             # plan from this start to the end
-            mini_path = neural_replanner2(mpNet, path[0], path[-1], obc, obs, IsInCollision, \
+            mini_path = neural_replanner2(mpNet, start, path[-1], obc, obs, IsInCollision, \
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
-                new_path = mini_path
-                #new_path += mini_path[1:]  # take out start point
+                new_path += mini_path[1:]  # take out start point
                 break
             else:
                 new_path += path[i+1:]     # just take in the rest of the path
@@ -129,6 +128,7 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
     new_path.append(path[-1])
     path = new_path
     new_path = [path[0]]
+    print('begin replanning...')
     for i in range(len(path)-1):
         # look at if adjacent nodes can be connected
         # assume start is already in new path
@@ -139,11 +139,14 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
             new_path.append(goal)
         else:
             # plan mini path
+            print('cant steer to...')
             mini_path = neural_replanner(mpNet, start, goal, obc, obs, IsInCollision, \
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
+                print('replanning success...')
                 new_path += mini_path[1:]  # take out start point
             else:
+                print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
                 break
     return new_path
