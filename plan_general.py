@@ -3,6 +3,15 @@ import numpy as np
 from utility import *
 import time
 DEFAULT_STEP = 0.05
+def removeCollision(path, obc, IsInCollision):
+    new_path = []
+    new_path.append(path[0])
+    # rule out nodes that are already in collision
+    for i in range(1,len(path)-1):
+        if not IsInCollision(path[i].numpy(),obc):
+            new_path.append(path[i])
+    new_path.append(path[-1])
+    return new_path
 def steerTo(start, end, obc, IsInCollision, step_sz=DEFAULT_STEP):
     # test if there is a collision free path from start to end, with step size
     # given by step_sz, and with generic collision check function
@@ -65,23 +74,15 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
         mini_path = neural_replanner2(mpNet, path[0], path[-1], path[-1], obc, obs, IsInCollision, \
                                      normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
         if mini_path:
-            return mini_path
+            return removeCollision(mini_path, obc, IsInCollision)
         else:
             # can't find a path
             return path
     MAX_LENGTH = 50
     # replan segments of paths
-    new_path = []
-    new_path.append(path[0])
-    # rule out nodes that are already in collision
-    for i in range(1,len(path)-1):
-        if not IsInCollision(path[i].numpy(),obc):
-            new_path.append(path[i])
-    new_path.append(path[-1])
+    new_path = removeCollision(path, obc, IsInCollision)
     path = new_path
     new_path = [path[0]]
-    print('replan path:')
-    print(path)
     for i in range(len(path)-1):
         # look at if adjacent nodes can be connected
         # assume start is already in new path
@@ -99,14 +100,13 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
             #                             normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
                 print('replanning success...')
-                new_path += mini_path[1:]  # take out start point
+                new_path += removeCollision(mini_path[1:], obc, IsInCollision)  # take out start point
                 #break
             else:
                 print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
                 break
-    print('replanned path:')
-    print(new_path)
+
     return new_path
 
 
@@ -117,19 +117,13 @@ def neural_replan3(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
         mini_path = neural_replanner3(mpNet, [path[0]], [path[-1]], obc, obs, IsInCollision, \
                                      normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
         if mini_path:
-            return mini_path
+            return removeCollision(mini_path, obc, IsInCollision)
         else:
             # can't find a path
             return path
     MAX_LENGTH = 50
     # replan segments of paths
-    new_path = []
-    new_path.append(path[0])
-    # rule out nodes that are already in collision
-    for i in range(1,len(path)-1):
-        if not IsInCollision(path[i].numpy(),obc):
-            new_path.append(path[i])
-    new_path.append(path[-1])
+    new_path = removeCollision(path, obc, IsInCollision)
     path = new_path
     new_path = [path[0]]
     print('begin replanning...')
@@ -148,7 +142,7 @@ def neural_replan3(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
                 print('replanning success...')
-                new_path = mini_path
+                new_path = removeCollision(mini_path, obc, IsInCollision)
                 #new_path += mini_path[1:]  # take out start point
             else:
                 print('replanning failed...')
@@ -164,19 +158,13 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
         mini_path = neural_replanner(mpNet, path[0], path[-1], obc, obs, IsInCollision, \
                                      normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
         if mini_path:
-            return mini_path
+            return removeCollision(mini_path, obc, IsInCollision)
         else:
             # can't find a path
             return path
     MAX_LENGTH = 50
     # replan segments of paths
-    new_path = []
-    new_path.append(path[0])
-    # rule out nodes that are already in collision
-    for i in range(1,len(path)-1):
-        if not IsInCollision(path[i].numpy(),obc):
-            new_path.append(path[i])
-    new_path.append(path[-1])
+    new_path = removeCollision(path, obc, IsInCollision)
     path = new_path
     new_path = [path[0]]
     print('begin replanning...')
@@ -195,7 +183,7 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
                 print('replanning success...')
-                new_path += mini_path[1:]  # take out start point
+                new_path += removeCollision(mini_path[1:], obc, IsInCollision)   # take out start point
             else:
                 print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
