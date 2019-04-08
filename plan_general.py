@@ -80,6 +80,8 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
     new_path.append(path[-1])
     path = new_path
     new_path = [path[0]]
+    print('replan path:')
+    print(path)
     for i in range(len(path)-1):
         # look at if adjacent nodes can be connected
         # assume start is already in new path
@@ -103,6 +105,8 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
                 print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
                 break
+    print('replanned path:')
+    print(new_path)
     return new_path
 
 
