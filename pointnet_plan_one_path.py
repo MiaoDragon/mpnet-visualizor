@@ -4,7 +4,8 @@ import Model.model as model
 import Model.model_c2d as model_c2d
 import Model.AE.CAE_r3d as CAE_r3d
 import Model.AE.CAE as CAE_2d
-
+import Model.AE.simplePointnetAE as PAE_2d
+import Model.AE.PointnetAE as CPAE_2d
 #import Model.AE.simplePointnetAE as CAE_2d
 import numpy as np
 import argparse
@@ -44,12 +45,15 @@ def main(args):
         load_test_dataset = data_loader_r2d.load_test_dataset
         normalize = utility_r2d.normalize
         unnormalize = utility_r2d.unnormalize
-        CAE = CAE_2d
+        if args.AE_type == 'simple':
+            CAE = PAE_2d
+        elif args.AE_type == 'complex':
+            CAE = CPAE_2d
+        #MLP = model.MLP
         if args.model_type == 'simple':
             MLP = model_c2d.MLP
         elif args.model_type == 'complex':
             MLP = model.MLP
-
         args.world_size = [20., 20., np.pi]
 
     if args.memory_type == 'res':
@@ -108,6 +112,8 @@ parser.add_argument('--data_path', type=str, default='../data/simple/')
 parser.add_argument('--memory_type', type=str, default='res', help='res for reservoid, rand for random sampling')
 parser.add_argument('--env_type', type=str, default='s2d', help='s2d for simple 2d, c2d for complex 2d')
 parser.add_argument('--model_type', type=str, default='complex', help='s2d for simple 2d, c2d for complex 2d')
+parser.add_argument('--AE_type', type=str, default='complex', help='complex or simple')
+
 parser.add_argument('--world_size', type=int, default=50, help='boundary of world')
 parser.add_argument('--env_idx', type=int, default=0, help='which env to visualize?')
 parser.add_argument('--path_idx', type=int, default=0, help='which path to visualize?')
