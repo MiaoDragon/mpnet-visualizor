@@ -122,8 +122,8 @@ def neural_replan3(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
             return path
     MAX_LENGTH = 50
     # replan segments of paths
-    new_path = removeCollision(path, obc, IsInCollision)
-    path = new_path
+    #new_path = removeCollision(path, obc, IsInCollision)
+    #path = new_path
     new_path = [path[0]]
     print('begin replanning...')
     for i in range(len(path)-1):
