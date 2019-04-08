@@ -195,6 +195,8 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
                 print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
                 break
+    print('planned path...')
+    print(new_path)
     return new_path
 
 
