@@ -276,11 +276,14 @@ def neural_replanner3(mpNet, start_path, goal_path, obc, obs, IsInCollision, nor
     #pA=[]
     #pA.append(start)
     pB = list(goal_path)
+    pB.reverse()
     #pB=[]
     #pB.append(goal)
     target_reached=0
     tree=0
     new_path = []
+    start = start_path[-1]
+    goal = goal_path[-1]
     while target_reached==0 and itr<MAX_LENGTH:
         itr=itr+1  # prevent the path from being too long
         if tree==0:
