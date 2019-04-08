@@ -183,7 +183,14 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             if mini_path:
                 print('replanning success...')
-                new_path += removeCollision(mini_path[1:], obc, IsInCollision)   # take out start point
+                print('before remove collision:')
+                print(len(mini_path[1:]))
+                print('after removing collision:')
+                mini_path = removeCollision(mini_path[1:], obc, IsInCollision)
+                print(len(mini_path))
+                new_path += mini_path
+                #new_path += removeCollision(mini_path[1:], obc, IsInCollision)   # take out start point
+
             else:
                 print('replanning failed...')
                 new_path += path[i+1:]     # just take in the rest of the path
