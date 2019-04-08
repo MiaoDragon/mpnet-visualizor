@@ -54,11 +54,11 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                         step_sz = 0.02
                     path = neural_replan2(mpNet, path, obc[i], obs[i], IsInCollision, \
                                          normalize_func, unnormalize_func, t==0, step_sz=step_sz)
-                    print('returned path:')
-                    print(path)
+                    #print('returned path:')
+                    #print(path)
                     path = lvc(path, obc[i], IsInCollision, step_sz=step_sz)
-                    print('after lvc:')
-                    print(path)
+                    #print('after lvc:')
+                    #print(path)
                     pickle.dump(path, open(path_file+'_'+str(t), "wb" ))
                     if feasibility_check(path, obc[i], IsInCollision, step_sz=0.01):
                         fp = 1
