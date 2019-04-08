@@ -62,7 +62,7 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
     if init_plan_flag:
         # if it is the initial plan, then we just do neural_replan
         MAX_LENGTH = 80
-        mini_path = neural_replanner2(mpNet, path[0], path[-1], obc, obs, IsInCollision, \
+        mini_path = neural_replanner2(mpNet, path[0], path[-1], path[-1], obc, obs, IsInCollision, \
                                      normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
         if mini_path:
             return mini_path
@@ -93,7 +93,7 @@ def neural_replan2(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize,
         else:
             # plan mini path
             # plan from this start to the end
-            mini_path = neural_replanner2(mpNet, start, goal, obc, obs, IsInCollision, \
+            mini_path = neural_replanner2(mpNet, start, goal, path[-1], obc, obs, IsInCollision, \
                                          normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
             #mini_path = neural_replanner2(mpNet, start, path[-1], obc, obs, IsInCollision, \
             #                             normalize, unnormalize, MAX_LENGTH, step_sz=step_sz)
@@ -157,18 +157,20 @@ def neural_replan(mpNet, path, obc, obs, IsInCollision, normalize, unnormalize, 
 
 
 
-def neural_replanner2(mpNet, start, goal, obc, obs, IsInCollision, normalize, unnormalize, MAX_LENGTH, step_sz=DEFAULT_STEP):
+def neural_replanner2(mpNet, start, inter_goal, goal, obc, obs, IsInCollision, normalize, unnormalize, MAX_LENGTH, step_sz=DEFAULT_STEP):
     # plan a mini path from start to goal
     # obs: tensor
+    # when traveling to goal, if can connect to inter_goal, then use inter_goal
     itr=0
     pA=[]
     pA.append(start)
     pB=[]
-    pB.append(goal)
+    pB.append(inter_goal)
+    inter_target_reached=0
     target_reached=0
     tree=0
     new_path = []
-    while target_reached==0 and itr<MAX_LENGTH:
+    while inter_target_reached==0 and target_reached==0 and itr<MAX_LENGTH:
         itr=itr+1  # prevent the path from being too long
         if tree==0:
             ip1=torch.cat((obs,start,goal)).unsqueeze(0)
@@ -189,25 +191,34 @@ def neural_replanner2(mpNet, start, goal, obc, obs, IsInCollision, normalize, un
             #print(start)
             pA.append(start)
             #tree=1
-        else:
-            ip2=torch.cat((obs,goal,start)).unsqueeze(0)
-            ip2=normalize(ip2)
-            ip2=to_var(ip2)
-            goal=mpNet(ip2).squeeze(0)
-            # unnormalize to world size
-            goal=goal.data.cpu()
-            goal = unnormalize(goal)
-            pB.append(goal)
-            #tree=0
-        target_reached=steerTo(start, goal, obc, IsInCollision, step_sz=step_sz)
-
-    if target_reached==0:
+        #else:
+        #    ip2=torch.cat((obs,goal,start)).unsqueeze(0)
+        #    ip2=normalize(ip2)
+        #    ip2=to_var(ip2)
+        #    goal=mpNet(ip2).squeeze(0)
+        #    # unnormalize to world size
+        #    goal=goal.data.cpu()
+        #    goal = unnormalize(goal)
+        #    pB.append(goal)
+        #    #tree=0
+        inter_target_reached=steerTo(start, inter_goal, obc, IsInCollision, step_sz=step_sz)
+        target_reached = steerTo(start, goal, obc, IsInCollision, step_sz=step_sz)
+    if target_reached==0 and inter_target_reached==0:
         return 0
-    else:
+    elif target_reached==0 and inter_target_reached==1:
+        # add the subgoal
         for p1 in range(len(pA)):
             new_path.append(pA[p1])
-        for p2 in range(len(pB)-1,-1,-1):
-            new_path.append(pB[p2])
+        new_path.append(inter_goal)
+        #for p2 in range(len(pB)-1,-1,-1):
+        #    new_path.append(pB[p2])
+    elif target_reached==1:
+        # add the ultimate goal
+        for p1 in range(len(pA)):
+            new_path.append(pA[p1])
+        new_path.append(goal)
+        #for p2 in range(len(pB)-1,-1,-1):
+        #    new_path.append(pB[p2])
     return new_path
 
 def neural_replanner(mpNet, start, goal, obc, obs, IsInCollision, normalize, unnormalize, MAX_LENGTH, step_sz=DEFAULT_STEP):
