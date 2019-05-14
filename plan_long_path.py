@@ -46,7 +46,7 @@ def main(args):
         normalize = utility_s2d.normalize
         unnormalize = utility_s2d.unnormalize
         CAE = CAE_2d
-        MLP = model.MLP
+        MLP = model_c2d.MLP
     elif args.env_type == 'r2d':
         IsInCollision = plan_r2d.IsInCollision
         load_test_dataset = data_loader_r2d.load_test_dataset
