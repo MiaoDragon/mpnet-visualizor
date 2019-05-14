@@ -43,6 +43,8 @@ def main(args):
     elif args.env_type == 'c2d':
         IsInCollision = plan_c2d.IsInCollision
         load_test_dataset = data_loader.load_test_dataset
+        normalize = utility_s2d.normalize
+        unnormalize = utility_s2d.unnormalize
         CAE = CAE_2d
         MLP = model.MLP
     elif args.env_type == 'r2d':
@@ -99,7 +101,7 @@ def main(args):
 
 parser = argparse.ArgumentParser()
 # for training
-parser.add_argument('--model_path', type=str, default='../hybrid_res/global/s2d/no_include/',help='path for saving trained models')
+parser.add_argument('--model_path', type=str, default='../hybrid_res/global/c2d/no_include/',help='path for saving trained models')
 parser.add_argument('--model_name', type=str, default='mpNet_cont_train', help='filename of model')
 # for continual learning
 parser.add_argument('--n_tasks', type=int, default=1,help='number of tasks')
@@ -112,9 +114,9 @@ parser.add_argument('--mlp_input_size', type=int , default=28+4, help='dimension
 parser.add_argument('--output_size', type=int , default=2, help='dimension of the input vector')
 parser.add_argument('--learning_rate', type=float, default=0.01)
 parser.add_argument('--device', type=int, default=0, help='cuda device')
-parser.add_argument('--data_path', type=str, default='/media/arclabdl1/HD1/YLmiao/mpnet/data/simple/')
+parser.add_argument('--data_path', type=str, default='/media/arclabdl1/HD1/Ahmed/r-2d/')
 parser.add_argument('--memory_type', type=str, default='res', help='res for reservoid, rand for random sampling')
-parser.add_argument('--env_type', type=str, default='s2d', help='s2d for simple 2d, c2d for complex 2d')
+parser.add_argument('--env_type', type=str, default='c2d', help='s2d for simple 2d, c2d for complex 2d')
 parser.add_argument('--model_type', type=str, default='complex', help='s2d for simple 2d, c2d for complex 2d')
 parser.add_argument('--world_size', type=int, default=20, help='boundary of world')
 parser.add_argument('--env_idx', type=int, default=0, help='which env to visualize?')

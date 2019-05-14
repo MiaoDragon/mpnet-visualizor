@@ -1,6 +1,6 @@
 from ompl import base as ob
 from ompl import geometric as og
-from plan_s2d import IsInCollision
+from plan_c2d import IsInCollision
 from data_loader_2d import *
 import argparse
 import pickle
