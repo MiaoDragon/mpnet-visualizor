@@ -22,12 +22,15 @@ def allocatePlanner(si, plannerType):
         return og.RRTstar(si)
     elif plannerType.lower() == "sorrtstar":
         return og.SORRTstar(si)
+    elif plannerType.lower() == 'rrtconnect':
+        return og.RRTConnect(si)
     else:
         ou.OMPL_ERROR("Planner-type is not implemented in allocation function.")
 
 
 def getPathLengthObjective(si):
     return ob.PathLengthOptimizationObjective(si)
+
 
 def plan(args):
     print('loading...')
@@ -66,13 +69,19 @@ def plan(args):
     ss.setup()
 
     solved = ss.solve(5.0)
-    path = pdef.getSolutionPath().getStates()
-    solutions = np.zeros((len(path),2))
-    for i in range(len(path)):
-        solutions[i][0] = float(path[i][0])
-        solutions[i][1] = float(path[i][1])
-    path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.p' % (args.planner, args.env_idx,args.path_idx))
-    pickle.dump(solutions, open(path_file, "wb" ))
+    path = ob.PlannerData(si)
+    ss.getPlannerData(path)
+    path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
+    graphml = path.printGraphML()
+    f = open(path_file, 'w')
+    f.write(graphml)
+    f.close()
+
+    #path = pdef.getSolutionPath().getStates()
+    #solutions = np.zeros((len(path),2))
+    #for i in range(len(path)):
+    #    solutions[i][0] = float(path[i][0])
+    #    solutions[i][1] = float(path[i][1])
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_path', type=str, default='../visual/')

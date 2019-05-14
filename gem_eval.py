@@ -9,7 +9,7 @@ import math
 import time
 from plan_general import *
 
-def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
+def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
     obc, obs, paths, path_lengths = test_data
     obs = torch.from_numpy(obs)
     fes_env = []   # list of list
@@ -47,11 +47,11 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                 for t in range(MAX_NEURAL_REPLAN):
                 # adaptive step size on replanning attempts
                     if (t == 2):
-                        step_sz = 0.04
+                        step_sz = 2.0
                     elif (t == 3):
-                        step_sz = 0.03
+                        step_sz = 1.2
                     elif (t > 3):
-                        step_sz = 0.02
+                        step_sz = 0.5
                     path = neural_replan2(mpNet, path, obc[i], obs[i], IsInCollision, \
                                          normalize_func, unnormalize_func, t==0, step_sz=step_sz)
                     #print('returned path:')
@@ -64,15 +64,18 @@ def eval_tasks(mpNet, test_data, true_file, path_file, IsInCollision, normalize_
                         fp = 1
                         print('feasible, ok!')
                         break
-    if path is None:
-        return 0
-    #for p in path:
-    #    IsInCollision(p.numpy(), obc[i], True)
-
-    path = np.array([p.numpy() for p in path])
-    pickle.dump(path, open(path_file, "wb" ))
-    path = np.array(paths[i][j])
-    pickle.dump(path, open(true_file, 'wb'))
+            #if path is None:
+            #    return 0
+            #for p in path:
+            #    IsInCollision(p.numpy(), obc[i], True)
+            if len(path) > 5:
+                num_saved_path += 1
+                path = np.array([p.numpy() for p in path])
+                pickle.dump(path, open(path_folder+'path_env_%d_path%d.p' % (env_idx+i, path_idx+j), "wb" ))
+                if num_saved_path > 10:
+                    return 1
+    #path = np.array(paths[i][j])
+    #pickle.dump(path, open(true_file, 'wb'))
     # write as txt files
     #file = open(filename, 'w')
     #file.write('planned path:')
