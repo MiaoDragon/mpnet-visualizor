@@ -36,6 +36,8 @@ def main(args):
     if args.env_type == 's2d':
         IsInCollision = plan_s2d.IsInCollision
         load_test_dataset = data_loader.load_test_dataset
+        normalize = utility_s2d.normalize
+        unnormalize = utility_s2d.unnormalize
         CAE = CAE_2d
         MLP = model.MLP
     elif args.env_type == 'c2d':
