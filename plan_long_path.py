@@ -121,7 +121,7 @@ parser.add_argument('--env_idx', type=int, default=0, help='which env to visuali
 parser.add_argument('--path_idx', type=int, default=0, help='which path to visualize?')
 parser.add_argument('--start_epoch', type=int, default=1)
 parser.add_argument('--N', type=int, default=100)
-parser.add_argument('--NP', type=int, default=200)
+parser.add_argument('--NP', type=int, default=4000)
 args = parser.parse_args()
 print(args)
 main(args)
