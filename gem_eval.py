@@ -8,6 +8,7 @@ from torch.autograd import Variable
 import math
 import time
 from plan_general import *
+import copy
 
 def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x):
     obc, obs, paths, path_lengths = test_data
@@ -25,6 +26,7 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
         # save paths to different files, indicated by i
         # feasible paths for each env
         for j in range(len(paths[0])):
+            path_attempts = []
             time0 = time.time()
             fp = 0 # indicator for feasibility
             print ("step: i="+str(i)+" j="+str(j))
@@ -59,7 +61,8 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
                     path = lvc(path, obc[i], IsInCollision, step_sz=step_sz)
                     #print('after lvc:')
                     #print(path)
-                    pickle.dump(path, open(path_file+'_'+str(t), "wb" ))
+                    path_attempts.append(copy.deepcopy(path))
+                    #pickle.dump(path, open(path_file+'_'+str(t), "wb" ))
                     if feasibility_check(path, obc[i], IsInCollision, step_sz=0.01):
                         fp = 1
                         print('feasible, ok!')
@@ -72,6 +75,9 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
                 num_saved_path += 1
                 path = np.array([p.numpy() for p in path])
                 pickle.dump(path, open(path_folder+'path_env_%d_path%d.p' % (env_idx+i, path_idx+j), "wb" ))
+                for path_attempt_i in range(len(path_attempts)):
+                    path_attempt = path_attempts[path_attempt_i]
+                    pickle.dump(path_attempt, open(path_folder+'path_env_%d_path%d.p_%d' % (env_idx+i, path_idx+j, path_attempt_i), 'wb'))
                 if num_saved_path > 10:
                     return 1
     #path = np.array(paths[i][j])
