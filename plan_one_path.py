@@ -37,10 +37,12 @@ def main(args):
         IsInCollision = plan_s2d.IsInCollision
         load_test_dataset = data_loader.load_test_dataset
         CAE = CAE_2d
+        MLP = model.MLP
     elif args.env_type == 'c2d':
         IsInCollision = plan_c2d.IsInCollision
         load_test_dataset = data_loader.load_test_dataset
         CAE = CAE_2d
+        MLP = model.MLP
     elif args.env_type == 'r2d':
         IsInCollision = plan_r2d.IsInCollision
         load_test_dataset = data_loader_r2d.load_test_dataset
