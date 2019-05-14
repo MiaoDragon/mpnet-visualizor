@@ -72,6 +72,8 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
             #    return 0
             #for p in path:
             #    IsInCollision(p.numpy(), obc[i], True)
+            if fp == 0:
+                continue
             if len(path) > 5:
                 print('found one path!')
                 num_saved_path += 1
