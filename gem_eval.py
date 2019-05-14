@@ -72,6 +72,7 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
             #for p in path:
             #    IsInCollision(p.numpy(), obc[i], True)
             if len(path) > 5:
+                print('found one path!')
                 num_saved_path += 1
                 path = np.array([p.numpy() for p in path])
                 pickle.dump(path, open(path_folder+'path_env_%d_path%d.p' % (env_idx+i, path_idx+j), "wb" ))
