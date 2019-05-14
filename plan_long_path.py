@@ -100,7 +100,7 @@ def main(args):
 parser = argparse.ArgumentParser()
 # for training
 parser.add_argument('--model_path', type=str, default='../hybrid_res/global/s2d/no_include/',help='path for saving trained models')
-parser.add_argument('--model_name', type=str, default='mpNet', help='filename of model')
+parser.add_argument('--model_name', type=str, default='mpNet_cont_train', help='filename of model')
 # for continual learning
 parser.add_argument('--n_tasks', type=int, default=1,help='number of tasks')
 parser.add_argument('--n_memories', type=int, default=256, help='number of memories for each task')
