@@ -19,6 +19,7 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
     time_env = []
     time_total = []
     path = None
+    num_saved_path = 0
     for i in range(len(paths)):
         time_path = []
         fes_path = []   # 1 for feasible, 0 for not feasible
