@@ -65,7 +65,7 @@ def main(args):
         #            args.n_tasks, args.n_memories, args.memory_strength, args.grad_step)
         pass
     # load previously trained model if start epoch > 0
-    model_path = 'cmpnet_epoch_%d.pkl' %(args.start_epoch)
+    model_path = '%s_epoch_%d.pkl' %(args.model_name, args.start_epoch)
     load_net_state(mpNet, os.path.join(args.model_path, model_path))
     # set seed after loading
     torch.manual_seed(torch_seed)
