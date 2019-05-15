@@ -76,7 +76,7 @@ def plan(args):
         time_limit = 20.
 
     test_data = data_loader.load_test_dataset(N=args.N, NP=args.NP, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
-    obc, obs, paths, path_lengths = test_data
+    obcs, obs, paths, path_lengths = test_data
     time_env = []
     time_total = []
     fes_env = []   # list of list
@@ -87,7 +87,7 @@ def plan(args):
         valid_path = []      # if the feasibility is valid or not
         # save paths to different files, indicated by i
         # feasible paths for each env
-        obc = obc[i]
+        obc = obcs[i]
         for j in range(len(paths[0])):
             s = paths[i][j][0].astype(np.float64)
             g = paths[i][j][path_lengths[i][j]-1].astype(np.float64)
