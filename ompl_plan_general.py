@@ -142,8 +142,7 @@ def plan(args):
         fes_env.append(fes_path)
         valid_env.append(valid_path)
         print('accuracy up to now: %f' % (np.sum(fes_env) / np.sum(valid_env)))
-    if filename is not None:
-        pickle.dump(time_env, open(filename, "wb" ))
+    pickle.dump(time_env, open(args.model_path+'time_%s.p' % (args.data_type), "wb" ))
     f = open(os.path.join(args.model_path,'%s_accuracy.txt' % (args.data_type)), 'w')
     f.write(str(seen_test_suc_rate))
     f.close()
