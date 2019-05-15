@@ -19,6 +19,11 @@ def overlap(b1corner,b1axis,b1orign,b2corner,b2axis,b2orign):
     return True
 
 def IsInCollision(stateIn,obc):
+    state = np.zeros(3)
+    state[0] = stateIn[0]
+    state[1] = stateIn[1]
+    state[2] = stateIn[2]
+    stateIn = state
     if abs(stateIn[0]) > 20. or abs(stateIn[1]) > 20.:
         return True
     robot_corner=np.zeros((4,2),dtype=np.float32)
