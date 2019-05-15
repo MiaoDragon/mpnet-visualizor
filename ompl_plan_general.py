@@ -30,9 +30,9 @@ def allocatePlanner(si, plannerType):
 
 
 def getPathLengthObjective(si):
-    return ob.PathLengthOptimizationObjective(si).setCostThreshold(ob.Cost(1e8))
-
-
+    obj = ob.PathLengthOptimizationObjective(si)
+    obj.setCostThreshold(ob.Cost(1e8))
+    return obj
 def plan(args):
     print('loading...')
     if args.env_type == 's2d':
