@@ -20,9 +20,9 @@ def overlap(b1corner,b1axis,b1orign,b2corner,b2axis,b2orign):
 
 def IsInCollision(stateIn,obc):
     state = np.zeros(3)
-    state[0] = stateIn[0]
-    state[1] = stateIn[1]
-    state[2] = stateIn[2]
+    state[0] = stateIn.getX()
+    state[1] = stateIn.getY()
+    state[2] = stateIn.getYaw()
     stateIn = state
     if abs(stateIn[0]) > 20. or abs(stateIn[1]) > 20.:
         return True
