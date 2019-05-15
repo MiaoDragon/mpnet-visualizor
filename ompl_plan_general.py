@@ -110,11 +110,11 @@ def plan(args):
             start = ob.State(space)
             # we can pick a random start state...
             # ... or set specific values
-            for i in range(len(s)):
-                start[i] = s[i]
+            for k in range(len(s)):
+                start[k] = s[k]
             goal = ob.State(space)
-            for i in range(len(g)):
-                goal[i] = g[i]
+            for k in range(len(g)):
+                goal[k] = g[k]
             si = ob.SpaceInformation(space)
             def isStateValid(state):
                 return not IsInCollision(state, obc)
@@ -145,6 +145,9 @@ def plan(args):
         print('accuracy up to now: %f' % (np.sum(fes_env) / np.sum(valid_env)))
     pickle.dump(time_env, open(args.model_path+'time_%s.p' % (args.data_type), "wb" ))
     f = open(os.path.join(args.model_path,'%s_accuracy.txt' % (args.data_type)), 'w')
+    valid_env = valid_env.flatten()
+    fes_env = fes_env.flatten()   # notice different environments are involved
+    seen_test_suc_rate = fes_env.sum() / valid_env.sum()
     f.write(str(seen_test_suc_rate))
     f.close()
 
