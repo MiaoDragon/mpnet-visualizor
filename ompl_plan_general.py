@@ -77,6 +77,10 @@ def plan(args):
 
     test_data = data_loader.load_test_dataset(N=args.N, NP=args.NP, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
     obc, obs, paths, path_lengths = test_data
+    time_env = []
+    time_total = []
+    fes_env = []   # list of list
+    valid_env = []
     for i in range(len(paths)):
         time_path = []
         fes_path = []   # 1 for feasible, 0 for not feasible
@@ -123,7 +127,7 @@ def plan(args):
             ss.setProblemDefinition(pdef)
             ss.setup()
 
-            solved = ss.solve(20.0)
+            solved = ss.solve(2.0)
             if solved:
                 fp = 1
             if fp:
