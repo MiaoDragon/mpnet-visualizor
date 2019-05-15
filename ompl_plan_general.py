@@ -44,7 +44,7 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 20.
+        time_limit = 1.
     elif args.env_type == 'c2d':
         data_loader = data_loader_2d
         IsInCollision = plan_c2d.IsInCollision
@@ -122,7 +122,7 @@ def plan(args):
             si.setup()
             pdef = ob.ProblemDefinition(si)
             pdef.setStartAndGoalStates(start, goal)
-            pdef.setOptimizationObjective(getPathLengthObjective(si))
+            pdef.setOptimizationObjective(getPathLengthObjective(si).threshold(1e8))
 
             ss = allocatePlanner(si, args.planner)
             ss.setProblemDefinition(pdef)
