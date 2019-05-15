@@ -106,31 +106,31 @@ def plan(args):
             if path_lengths[i][j]>0:
                 fp = 0
                 valid_path.append(1)
-            # create a simple setup object
-            start = ob.State(space)
-            # we can pick a random start state...
-            # ... or set specific values
-            for k in range(len(s)):
-                start[k] = s[k]
-            goal = ob.State(space)
-            for k in range(len(g)):
-                goal[k] = g[k]
-            si = ob.SpaceInformation(space)
-            def isStateValid(state):
-                return not IsInCollision(state, obc)
-            si.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
-            si.setup()
-            pdef = ob.ProblemDefinition(si)
-            pdef.setStartAndGoalStates(start, goal)
-            pdef.setOptimizationObjective(getPathLengthObjective(si))
+                # create a simple setup object
+                start = ob.State(space)
+                # we can pick a random start state...
+                # ... or set specific values
+                for k in range(len(s)):
+                    start[k] = s[k]
+                goal = ob.State(space)
+                for k in range(len(g)):
+                    goal[k] = g[k]
+                si = ob.SpaceInformation(space)
+                def isStateValid(state):
+                    return not IsInCollision(state, obc)
+                si.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
+                si.setup()
+                pdef = ob.ProblemDefinition(si)
+                pdef.setStartAndGoalStates(start, goal)
+                pdef.setOptimizationObjective(getPathLengthObjective(si))
 
-            ss = allocatePlanner(si, args.planner)
-            ss.setProblemDefinition(pdef)
-            ss.setup()
+                ss = allocatePlanner(si, args.planner)
+                ss.setProblemDefinition(pdef)
+                ss.setup()
 
-            solved = ss.solve(time_limit)
-            if solved:
-                fp = 1
+                solved = ss.solve(time_limit)
+                if solved:
+                    fp = 1
             if fp:
                 # only for successful paths
                 time1 = time.time() - time0
