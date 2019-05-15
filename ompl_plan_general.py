@@ -82,7 +82,7 @@ def plan(args):
         valid_path = []      # if the feasibility is valid or not
         # save paths to different files, indicated by i
         # feasible paths for each env
-            obc = obc[i]
+        obc = obc[i]
         for j in range(len(paths[0])):
             s = paths[i][j][0].astype(np.float64)
             g = paths[i][j][path_lengths[i][j]-1].astype(np.float64)
