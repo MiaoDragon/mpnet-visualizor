@@ -6,6 +6,7 @@ import argparse
 import pickle
 import sys
 import time
+import numpy as np
 def allocatePlanner(si, plannerType):
     if plannerType.lower() == "bfmtstar":
         return og.BFMT(si)
