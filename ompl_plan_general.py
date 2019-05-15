@@ -141,21 +141,9 @@ def plan(args):
         print('accuracy up to now: %f' % (np.sum(fes_env) / np.sum(valid_env)))
     if filename is not None:
         pickle.dump(time_env, open(filename, "wb" ))
-
-    path = ob.PlannerData(si)
-    ss.getPlannerData(path)
-    path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
-    graphml = path.printGraphML()
-    f = open(path_file, 'w')
-    f.write(graphml)
+    f = open(os.path.join(args.model_path,'%s_accuracy.txt' % (args.data_type)), 'w')
+    f.write(str(seen_test_suc_rate))
     f.close()
-
-    path = pdef.getSolutionPath().getStates()
-    solutions = np.zeros((len(path),2))
-    for i in range(len(path)):
-        solutions[i][0] = float(path[i][0])
-        solutions[i][1] = float(path[i][1])
-    pickle.dump(solutions, open(args.model_path+'%s_path_env%d_path%d.p' % (args.planner, args.env_idx, args.path_idx), 'wb'))
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_path', type=str, default='../visual/')
@@ -167,5 +155,6 @@ parser.add_argument('--NP', type=int, default=0)
 parser.add_argument('--data_path', type=str, default='../data/simple/')
 parser.add_argument('--env_type', type=str, default='s2d')
 parser.add_argument('--planner', type=str, default='bitstar')
+parser.add_argument('--data_type', type=str, default='seen')
 args = parser.parse_args()
 plan(args)
