@@ -30,7 +30,7 @@ def allocatePlanner(si, plannerType):
 
 
 def getPathLengthObjective(si):
-    return ob.PathLengthOptimizationObjective(si)
+    return ob.PathLengthOptimizationObjective(si).setCostThreshold(ob.Cost(1e8))
 
 
 def plan(args):
@@ -122,7 +122,7 @@ def plan(args):
             si.setup()
             pdef = ob.ProblemDefinition(si)
             pdef.setStartAndGoalStates(start, goal)
-            pdef.setOptimizationObjective(getPathLengthObjective(si).threshold(1e8))
+            pdef.setOptimizationObjective(getPathLengthObjective(si))
 
             ss = allocatePlanner(si, args.planner)
             ss.setProblemDefinition(pdef)
