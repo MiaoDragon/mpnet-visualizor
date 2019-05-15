@@ -44,7 +44,7 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 1.
+        time_limit = 20.
     elif args.env_type == 'c2d':
         data_loader = data_loader_2d
         IsInCollision = plan_c2d.IsInCollision
@@ -128,7 +128,7 @@ def plan(args):
             ss.setProblemDefinition(pdef)
             ss.setup()
 
-            solved = ss.solve(2.0)
+            solved = ss.solve(time_limit)
             if solved:
                 fp = 1
             if fp:
