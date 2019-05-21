@@ -1,7 +1,7 @@
 from ompl import base as ob
 from ompl import geometric as og
 import plan_c2d, plan_s2d, plan_r2d, plan_r3d
-import data_loader_2d, data_loader_r2d, data_loader_r3d, data_loader_rigid
+import data_loader_2d, data_loader_r2d, data_loader_r3d
 import argparse
 import pickle
 import sys
@@ -12,7 +12,9 @@ def allocatePlanner(si, plannerType):
     if plannerType.lower() == "bfmtstar":
         return og.BFMT(si)
     elif plannerType.lower() == "bitstar":
-        return og.BITstar(si)
+        planner = og.BITstar(si)
+        planner.setPruning(False)
+        return planner
     elif plannerType.lower() == "fmtstar":
         return og.FMT(si)
     elif plannerType.lower() == "informedrrtstar":
