@@ -29,9 +29,9 @@ def allocatePlanner(si, plannerType):
         ou.OMPL_ERROR("Planner-type is not implemented in allocation function.")
 
 
-def getPathLengthObjective(si):
+def getPathLengthObjective(si, length):
     obj = ob.PathLengthOptimizationObjective(si)
-    obj.setCostThreshold(ob.Cost(1e8))
+    obj.setCostThreshold(ob.Cost(length))
     return obj
 def plan(args):
     print('loading...')
@@ -90,6 +90,9 @@ def plan(args):
         # feasible paths for each env
         obc = obcs[i]
         for j in range(len(paths[0])):
+            data_length = 0.
+            for k in range(path_lengths[i][j]-1):
+                data_length += np.linalg.norm(paths[i][j][k+1]-paths[i][j][k])
             s = paths[i][j][0].astype(np.float64)
             g = paths[i][j][path_lengths[i][j]-1].astype(np.float64)
             time0 = time.time()
@@ -122,7 +125,7 @@ def plan(args):
                 si.setup()
                 pdef = ob.ProblemDefinition(si)
                 pdef.setStartAndGoalStates(start, goal)
-                pdef.setOptimizationObjective(getPathLengthObjective(si))
+                pdef.setOptimizationObjective(getPathLengthObjective(si, data_length))
 
                 ss = allocatePlanner(si, args.planner)
                 ss.setProblemDefinition(pdef)

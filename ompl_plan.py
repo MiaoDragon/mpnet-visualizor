@@ -84,6 +84,9 @@ def plan(args):
         # feasible paths for each env
             obc = obc[i]
         for j in range(len(paths[0])):
+            data_length = 0.
+            for k in range(path_lengths[i][j]-1):
+                data_length += np.linalg.norm(paths[i][j][k+1]-paths[i][j][k])
             s = paths[i][j][0].astype(np.float64)
             g = paths[i][j][path_lengths[i][j]-1].astype(np.float64)
             time0 = time.time()
