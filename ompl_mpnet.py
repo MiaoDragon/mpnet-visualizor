@@ -76,7 +76,7 @@ def eval_tasks(mpNet, test_data, env_idx, path_idx, IsInCollision, normalize_fun
                 path_length += np.linalg.norm(path[i+1]-path[i])
             return True, time1, path_length, path, path_attempts
         else:
-            return False, 0., 0. None, []
+            return False, 0., 0., None, []
 
 def useGraphTool(pd):
     graphml = pd.printGraphML()
