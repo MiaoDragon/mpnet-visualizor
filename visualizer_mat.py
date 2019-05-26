@@ -76,6 +76,12 @@ for i in range(0,7):
     r = patches.Rectangle((obc[i][0]-shape[i][0]/2,obc[i][1]-shape[i][1]/2),shape[i][0],shape[i][1],linewidth=.5,edgecolor='black',facecolor='black')
     ax.add_patch(r)
 
+cs = 'gbrcyk'
+mapping = np.random.randint(low=0, high=len(cs), size=len(path))
+colors = [cs[mapping[i]] for i in range(len(path))]
+xs = [path[i][0] for i in range(len(path))]
+ys = [path[i][1] for i in range(len(path))]
+plt.scatter(xs, ys, c=colors)
 step = 5
 ax.xaxis.set_ticks(np.arange(-20, 20+step, step))
 ax.yaxis.set_ticks(np.arange(-20, 20+step, step))
