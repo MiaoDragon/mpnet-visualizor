@@ -299,7 +299,6 @@ def plan(args):
                 if not fp:
                     continue
                 print('found one path!')
-                num_saved_path += 1
                 path = np.array([p.numpy() for p in path])
                 pickle.dump(path, open(path_folder+'mpnet_path_env_%d_path%d.p' % (args.env_idx+i, args.path_idx+j), "wb" ))
                 for path_attempt_i in range(len(path_attempts)):
