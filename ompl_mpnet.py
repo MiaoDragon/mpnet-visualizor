@@ -284,10 +284,10 @@ def plan(args):
                         plan_length = 0.
                         for i in range(len(path)-1):
                             plan_length += np.linalg.norm(solutions[i+1] - solutions[i])
-                        if plan_length < data_length:
+                        if plan_length < .9 * data_length:
                             # found a better path
                             print('Ooooops, MPNet is worse')
-                            #fp = 0
+                            fp = 0
                         if fp:
                             planner_paths.append(solutions)
                             planner_graphs.append(graphml)
