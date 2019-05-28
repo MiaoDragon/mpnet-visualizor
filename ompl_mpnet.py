@@ -81,7 +81,7 @@ def eval_tasks(mpNet, test_data, env_idx, path_idx, IsInCollision, normalize_fun
             print('test time: %f' % (time1))
             # calculate path length
             path_length = 0.
-            path = path.numpy()
+            #path = path.numpy()
             for i in range(len(path)-1):
                 path_length += np.linalg.norm(path[i+1]-path[i])
             return True, time1, path_length, path, path_attempts
