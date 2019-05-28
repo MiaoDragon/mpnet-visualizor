@@ -277,6 +277,8 @@ def plan(args):
                         #f.write(graphml)
                         #f.close()
                         ompl_path = pdef.getSolutionPath().getStates()
+                        if len(ompl_path) < 5:
+                            fp = 0
                         solutions = np.zeros((len(ompl_path),2))
                         for k in range(len(ompl_path)):
                             solutions[k][0] = float(ompl_path[k][0])

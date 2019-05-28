@@ -57,7 +57,6 @@ else:
 edges = graph.edges_iter()
 
 for (u, v) in edges:
-    count += 1
     x = graph.node[u]['coords']
     y = graph.node[v]['coords']
     x = x.split(',')
