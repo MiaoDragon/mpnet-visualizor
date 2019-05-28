@@ -270,7 +270,7 @@ def plan(args):
                         fp = 1
                         # compare path length
                         ompl_path = ob.PlannerData(si)
-                        #ss.getPlannerData(path)
+                        ss.getPlannerData(ompl_path)
                         #path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
                         graphml = ompl_path.printGraphML()
                         #f = open(path_file, 'w')

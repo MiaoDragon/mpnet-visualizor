@@ -57,6 +57,7 @@ else:
 edges = graph.edges_iter()
 
 for (u, v) in edges:
+    count += 1
     x = graph.node[u]['coords']
     y = graph.node[v]['coords']
     x = x.split(',')
@@ -65,7 +66,6 @@ for (u, v) in edges:
     y = [float(j) for j in y]
     l = mlines.Line2D([x[0],y[0]], [x[1],y[1]], linewidth=0.5, color='b')
     ax.add_line(l)
-
 path = path_sol
 for i in range(len(path)-1):
     xmin = path[i][0]
