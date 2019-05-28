@@ -216,12 +216,20 @@ def plan(args):
             p1_ind=0
             p2_ind=0
             p_ind=0
+            data_length = 0.
+            for k in range(path_lengths[i][j]-1):
+                data_length += np.linalg.norm(paths[i][j][k+1]-paths[i][j][k])
+            print('data length:')
+            print(data_length)
             fes, mp_time, mp_length, mpnet_path, path_attempts = eval_tasks(mpNet, test_data, i, j, IsInCollision, unnormalize_func)
             if not fes:
                 continue
-            time_limit = mp_time
+            time_limit = 10
+            # if mpnet path length is within 110% of data length
+            if mp_length > data_length * 1.1:
+                continue
             data_length = mp_length
-            print('data length:')
+            print('mpnet length:')
             print(data_length)
             if path_lengths[i][j]==0:
                 # invalid, feasible = 0, and path count = 0
