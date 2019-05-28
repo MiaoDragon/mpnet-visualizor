@@ -227,7 +227,7 @@ def plan(args):
                 continue
             time_limit = 10
             # if mpnet path length is within 110% of data length
-            if mp_length > data_length * 1.1:
+            if mp_length > data_length * 1.05:
                 continue
             data_length = mp_length
             print('mpnet length:')
@@ -287,12 +287,13 @@ def plan(args):
                         if plan_length < data_length:
                             # found a better path
                             print('Ooooops, MPNet is worse')
-                            fp = 0
+                            #fp = 0
                         if fp:
                             planner_paths.append(solutions)
                             planner_graphs.append(graphml)
                         #pickle.dump(solutions, open(args.model_path+'%s_path_env%d_path%d.p' % (args.planner, args.env_idx, args.path_idx), 'wb'))
-
+                    else:
+                        fp = 0
                     if not fp:
                         break
                 if not fp:
