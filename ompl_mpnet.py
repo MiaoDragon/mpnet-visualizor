@@ -19,6 +19,7 @@ import numpy as np
 from plan_general import *
 from utility import *
 import utility_s2d, utility_c2d, utility_r3d, utility_r2d
+import random
 def eval_tasks(mpNet, test_data, env_idx, path_idx, IsInCollision, normalize_func = lambda x:x, unnormalize_func=lambda x: x, time_flag=False):
     obc, obs, paths, path_lengths = test_data
     obs = torch.from_numpy(obs)
