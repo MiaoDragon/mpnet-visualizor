@@ -82,8 +82,8 @@ def eval_tasks(mpNet, test_data, env_idx, path_idx, IsInCollision, normalize_fun
             # calculate path length
             path_length = 0.
             #path = path.numpy()
-            for i in range(len(path)-1):
-                path_length += np.linalg.norm(path[i+1]-path[i])
+            for k in range(len(path)-1):
+                path_length += np.linalg.norm(path[k+1]-path[k])
             return True, time1, path_length, path, path_attempts
         else:
             return False, 0., 0., None, []
@@ -278,12 +278,12 @@ def plan(args):
                         #f.close()
                         ompl_path = pdef.getSolutionPath().getStates()
                         solutions = np.zeros((len(ompl_path),2))
-                        for i in range(len(ompl_path)):
-                            solutions[i][0] = float(ompl_path[i][0])
-                            solutions[i][1] = float(ompl_path[i][1])
+                        for k in range(len(ompl_path)):
+                            solutions[k][0] = float(ompl_path[k][0])
+                            solutions[k][1] = float(ompl_path[k][1])
                         plan_length = 0.
-                        for i in range(len(ompl_path)-1):
-                            plan_length += np.linalg.norm(solutions[i+1] - solutions[i])
+                        for k in range(len(ompl_path)-1):
+                            plan_length += np.linalg.norm(solutions[k+1] - solutions[k])
                         if plan_length < .9 * data_length:
                             # found a better path
                             print('Ooooops, MPNet is worse')

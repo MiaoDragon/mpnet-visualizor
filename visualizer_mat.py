@@ -42,15 +42,15 @@ shape=[[10.0,5.0],[5.0,10.0],[10.0,10.0],[10.0,5.0],[5.0,10.0],[10.0,5.0],[5.0,1
 # path is numpy array of dimension l*dim
 # planned path
 if args.encoding == 'latin1':
-    path_sol = pickle.load( open(args.line_path+'path_env_%d_path%d.p' % (args.env_idx, args.path_idx), 'rb'),encoding="latin1" )
+    path_sol = pickle.load( open(args.line_path+'mpnet_path_env_%d_path%d.p' % (args.env_idx, args.path_idx), 'rb'),encoding="latin1" )
 else:
     path_sol = pickle.load( open(args.line_path, 'rb') )
 paths = []
 for i in range(args.n):
     if args.encoding == 'latin1':
-        path = pickle.load( open(args.line_path+'path_env_%d_path%d.p' % (args.env_idx, args.path_idx)+'_%d' % (i), 'rb'),encoding="latin1" )
+        path = pickle.load( open(args.line_path+'mpnet_path_env_%d_path%d.p' % (args.env_idx, args.path_idx)+'_%d' % (i), 'rb'),encoding="latin1" )
     else:
-        path = pickle.load( open(args.line_path+'path_env_%d_path%d.p' % (args.env_idx, args.path_idx)+'_%d' % (i), 'rb') )
+        path = pickle.load( open(args.line_path+'mpnet_path_env_%d_path%d.p' % (args.env_idx, args.path_idx)+'_%d' % (i), 'rb') )
     paths.append(path)
 
 alpha_max = .6
