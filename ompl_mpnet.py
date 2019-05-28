@@ -269,20 +269,20 @@ def plan(args):
                     if solved:
                         fp = 1
                         # compare path length
-                        path = ob.PlannerData(si)
+                        ompl_path = ob.PlannerData(si)
                         #ss.getPlannerData(path)
                         #path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
-                        graphml = path.printGraphML()
+                        graphml = ompl_path.printGraphML()
                         #f = open(path_file, 'w')
                         #f.write(graphml)
                         #f.close()
-                        path = pdef.getSolutionPath().getStates()
-                        solutions = np.zeros((len(path),2))
-                        for i in range(len(path)):
-                            solutions[i][0] = float(path[i][0])
-                            solutions[i][1] = float(path[i][1])
+                        ompl_path = pdef.getSolutionPath().getStates()
+                        solutions = np.zeros((len(ompl_path),2))
+                        for i in range(len(ompl_path)):
+                            solutions[i][0] = float(ompl_path[i][0])
+                            solutions[i][1] = float(ompl_path[i][1])
                         plan_length = 0.
-                        for i in range(len(path)-1):
+                        for i in range(len(ompl_path)-1):
                             plan_length += np.linalg.norm(solutions[i+1] - solutions[i])
                         if plan_length < .9 * data_length:
                             # found a better path
@@ -308,7 +308,7 @@ def plan(args):
                 for planner_i in range(len(planners)):
                     planner = planners[planner_i]
                     graphml = planner_graphs[planner_i]
-                    path = paths[planner_i]
+                    path = planner_paths[planner_i]
                     path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (planner, args.env_idx+i,args.path_idx+j))
                     f = open(path_file, 'w')
                     f.write(graphml)
