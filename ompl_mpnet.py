@@ -269,7 +269,7 @@ def plan(args):
                     if solved:
                         fp = 1
                         # compare path length
-                        #path = ob.PlannerData(si)
+                        path = ob.PlannerData(si)
                         #ss.getPlannerData(path)
                         #path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
                         graphml = path.printGraphML()
