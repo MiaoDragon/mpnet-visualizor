@@ -46,7 +46,8 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 20.
+        time_limit = 60.
+        ratio = 1.
     elif args.env_type == 'c2d':
         data_loader = data_loader_2d
         IsInCollision = plan_c2d.IsInCollision
@@ -56,7 +57,8 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 20.
+        time_limit = 60.
+        ratio = 1.
     elif args.env_type == 'r2d':
         data_loader = data_loader_r2d
         IsInCollision = plan_r2d.IsInCollision
@@ -66,7 +68,8 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 50.
+        time_limit = 60.
+        ratio = 1.3
     elif args.env_type == 'r3d':
         data_loader = data_loader_r3d
         IsInCollision = plan_r3d.IsInCollision
@@ -76,7 +79,8 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 20.
+        time_limit = 60.
+        ratio = 1.
 
     test_data = data_loader.load_test_dataset(N=args.N, NP=args.NP, s=args.env_idx, sp=args.path_idx, folder=args.data_path)
     obcs, obs, paths, path_lengths = test_data
@@ -129,6 +133,7 @@ def plan(args):
                 si.setup()
                 pdef = ob.ProblemDefinition(si)
                 pdef.setStartAndGoalStates(start, goal)
+                data_length = data_length * ratio
                 pdef.setOptimizationObjective(getPathLengthObjective(si, data_length))
 
                 ss = allocatePlanner(si, args.planner)

@@ -119,7 +119,8 @@ def allocatePlanner(si, plannerType):
 
 def getPathLengthObjective(si, length):
     obj = ob.PathLengthOptimizationObjective(si)
-    obj.setCostThreshold(ob.Cost(length))
+    if length is not None:
+        obj.setCostThreshold(ob.Cost(length))
     return obj
 def plan(args):
     print('loading...')
@@ -225,7 +226,7 @@ def plan(args):
             fes, mp_time, mp_length, mpnet_path, path_attempts = eval_tasks(mpNet, test_data, i, j, IsInCollision, unnormalize_func)
             if not fes:
                 continue
-            time_limit = 10
+            #time_limit = 10
             # if mpnet path length is within 110% of data length
             if mp_length > data_length * 1.05:
                 continue

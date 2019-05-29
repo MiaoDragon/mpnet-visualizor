@@ -63,19 +63,31 @@ for (u, v) in edges:
     x = [float(i) for i in x]
     y = y.split(',')
     y = [float(j) for j in y]
-    l = mlines.Line2D([x[0],y[0]], [x[1],y[1]], linewidth=0.5, color='b')
+    l = mlines.Line2D([x[0],y[0]], [x[1],y[1]], linewidth=1., color='pink',zorder=0,alpha=1.)
     ax.add_line(l)
+nodes = graph.nodes_iter()
+xs = []
+ys = []
+for u in nodes:
+    x = graph.node[u]['coords']
+    x = x.split(',')
+    x = np.array([float(i) for i in x])
+    xs.append(x[0])
+    ys.append(x[1])
+plt.scatter(xs, ys, s=.1, c='b', zorder=1, alpha=0.5)
+
 path = path_sol
 for i in range(len(path)-1):
     xmin = path[i][0]
     xmax = path[i+1][0]
     ymin = path[i][1]
     ymax = path[i+1][1]
-    l = mlines.Line2D([xmin,xmax], [ymin,ymax], linewidth=1.5, color='r')
+    l = mlines.Line2D([xmin,xmax], [ymin,ymax], linewidth=2., color='r',zorder=1)
     ax.add_line(l)
 
 for i in range(0,7):
-    r = patches.Rectangle((obc[i][0]-shape[i][0]/2,obc[i][1]-shape[i][1]/2),shape[i][0],shape[i][1],linewidth=.5,edgecolor='black',facecolor='black')
+    r = patches.Rectangle((obc[i][0]-shape[i][0]/2,obc[i][1]-shape[i][1]/2),shape[i][0],shape[i][1],\
+        linewidth=.5,edgecolor=(126/255, 112/255, 125/255),facecolor=(126/255, 112/255, 125/255),zorder=1)
     ax.add_patch(r)
 
 # ground truth
@@ -90,9 +102,24 @@ ground_line_set.lines = Vector2iVector(lines)
 colors = [[0, 1, 0] for i in range(len(lines))]
 ground_line_set.colors = Vector3dVector(colors)
 """
-step = 4
+#cs = 'gbrcyk'
+cs = 'gcyk'
+mapping = np.random.randint(low=0, high=len(cs), size=len(path))
+#colors = [cs[mapping[i]] for i in range(len(path))]
+colors = ['darkblue', 'darkblue']
+#xs = [path[i][0] for i in range(len(path))]
+#ys = [path[i][1] for i in range(len(path))]
+xs = [path[0][0],path[-1][0]]
+ys = [path[0][1],path[-1][1]]
+#sizes = [30. for i in range(len(path))]
+#sizes[0] = 50.
+#sizes[-1] = 50.
+sizes = [100., 100.]
+plt.scatter(xs, ys, s=sizes, c=colors, zorder=2)
+step = 5
 ax.xaxis.set_ticks(np.arange(-20, 20+step, step))
 ax.yaxis.set_ticks(np.arange(-20, 20+step, step))
 #fig.canvas.manager.window.wm_geometry("+%d+%d" % (center_x, center_y))
 #plt.show()
-plt.savefig(args.out_path+'%s_path_env%d_path%d' % (args.model, args.env_idx,args.path_idx)+'.png')
+plt.axis('off')
+plt.savefig(args.out_path+'%s_path_env%d_path%d' % (args.model, args.env_idx,args.path_idx)+'.png', bbox_inches='tight',pad_inches=0)

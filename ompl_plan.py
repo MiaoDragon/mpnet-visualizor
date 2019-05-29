@@ -7,6 +7,7 @@ import pickle
 import sys
 import time
 import numpy as np
+import os
 def allocatePlanner(si, plannerType):
     if plannerType.lower() == "bfmtstar":
         return og.BFMT(si)
@@ -56,7 +57,7 @@ def plan(args):
         bounds.setLow(-20)
         bounds.setHigh(20)
         space.setBounds(bounds)
-        time_limit = 20.
+        time_limit = 10.
     elif args.env_type == 'r2d':
         data_loader = data_loader_r2d
         IsInCollision = plan_r2d.IsInCollision
@@ -131,7 +132,7 @@ def plan(args):
                 si.setup()
                 pdef = ob.ProblemDefinition(si)
                 pdef.setStartAndGoalStates(start, goal)
-                pdef.setOptimizationObjective(getPathLengthObjective(si, data_length))
+                pdef.setOptimizationObjective(getPathLengthObjective(si, 0))
 
                 ss = allocatePlanner(si, args.planner)
                 ss.setProblemDefinition(pdef)
@@ -159,7 +160,21 @@ def plan(args):
     seen_test_suc_rate = fes_env.sum() / valid_env.sum()
     #f.write(str(seen_test_suc_rate))
     #f.close()
-
+    ompl_path = ob.PlannerData(si)
+    ss.getPlannerData(ompl_path)
+    path_file = os.path.join(args.model_path,'%s_path_env%d_path%d.graphml' % (args.planner, args.env_idx,args.path_idx))
+    graphml = ompl_path.printGraphML()
+    f = open(path_file, 'w')
+    f.write(graphml)
+    f.close()
+    ompl_path = pdef.getSolutionPath().getStates()
+    if len(ompl_path) < 5:
+        fp = 0
+    solutions = np.zeros((len(ompl_path),2))
+    for k in range(len(ompl_path)):
+        solutions[k][0] = float(ompl_path[k][0])
+        solutions[k][1] = float(ompl_path[k][1])
+    pickle.dump(solutions, open(args.model_path+'%s_path_env%d_path%d.p' % (args.planner, args.env_idx, args.path_idx), 'wb'))
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_path', type=str, default='../visual/')
 parser.add_argument('--env_idx', type=int, default=10, help='which env to visualize?')
