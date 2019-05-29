@@ -69,7 +69,7 @@ def plan(args):
         bounds.setHigh(20)
         space.setBounds(bounds)
         time_limit = 60.
-        ratio = 1.3
+        ratio = 1.2
     elif args.env_type == 'r3d':
         data_loader = data_loader_r3d
         IsInCollision = plan_r3d.IsInCollision
