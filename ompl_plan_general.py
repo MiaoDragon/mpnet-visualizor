@@ -69,7 +69,7 @@ def plan(args):
         bounds.setHigh(20)
         space.setBounds(bounds)
         time_limit = 60.
-        ratio = 1.2
+        ratio = 1.1
     elif args.env_type == 'r3d':
         data_loader = data_loader_r3d
         IsInCollision = plan_r3d.IsInCollision
@@ -133,7 +133,8 @@ def plan(args):
                 si.setup()
                 pdef = ob.ProblemDefinition(si)
                 pdef.setStartAndGoalStates(start, goal)
-                data_length = data_length * ratio
+                if ratio != 1.:
+                    data_length = max(data_length * ratio, data_length + 5.)
                 pdef.setOptimizationObjective(getPathLengthObjective(si, data_length))
 
                 ss = allocatePlanner(si, args.planner)
