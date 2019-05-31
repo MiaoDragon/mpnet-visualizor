@@ -69,7 +69,7 @@ def plan(args):
         bounds.setHigh(20)
         space.setBounds(bounds)
         time_limit = 60.
-        ratio = 1.
+        ratio = 1.05
     elif args.env_type == 'r3d':
         data_loader = data_loader_r3d
         IsInCollision = plan_r3d.IsInCollision
@@ -101,6 +101,7 @@ def plan(args):
                 data_length += np.linalg.norm(paths[i][j][k+1]-paths[i][j][k])
             print('data length:')
             print(data_length)
+            data_length = data_length * ratio
             s = paths[i][j][0].astype(np.float64)
             g = paths[i][j][path_lengths[i][j]-1].astype(np.float64)
             time0 = time.time()
