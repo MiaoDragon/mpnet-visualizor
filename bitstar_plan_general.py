@@ -157,8 +157,8 @@ def plan(args):
         fes_env.append(fes_path)
         valid_env.append(valid_path)
         print('accuracy up to now: %f' % (np.sum(fes_env) / np.sum(valid_env)))
-    pickle.dump(time_env, open(args.model_path+'time_%s_sample_%d.p' % (args.data_type, args.samples), "wb" ))
-    f = open(os.path.join(args.model_path,'%s_accuracy_sample_%d.txt' % (args.data_type, args.samples)), 'w')
+    pickle.dump(time_env, open(args.model_path+'time_%s_sample_%d_rewire_%f.p' % (args.data_type, args.samples, args.rewire), "wb" ))
+    f = open(os.path.join(args.model_path,'%s_accuracy_sample_%d_rewire_%f.txt' % (args.data_type, args.samples, args.rewire)), 'w')
     valid_env = np.array(valid_env).flatten()
     fes_env = np.array(fes_env).flatten()   # notice different environments are involved
     seen_test_suc_rate = fes_env.sum() / valid_env.sum()
