@@ -15,7 +15,7 @@ def allocatePlanner(si, plannerType):
         planner = og.BITstar(si)
         planner.setPruning(False)
         planner.setSamplesPerBatch(args.samples)
-        print(planner.getRewireFactor())
+        planner.setRewireFactor(args.rewire)
         return planner
     elif plannerType.lower() == "fmtstar":
         return og.FMT(si)
@@ -177,6 +177,7 @@ parser.add_argument('--env_type', type=str, default='s2d')
 parser.add_argument('--planner', type=str, default='bitstar')
 parser.add_argument('--data_type', type=str, default='seen')
 parser.add_argument('--samples', type=int, default=100)
+parser.add_argument('--rewire', type=float, default=1.1)
 
 args = parser.parse_args()
 plan(args)
