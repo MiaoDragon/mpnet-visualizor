@@ -14,8 +14,8 @@ def allocatePlanner(si, plannerType):
     elif plannerType.lower() == "bitstar":
         planner = og.BITstar(si)
         planner.setPruning(False)
-        planner.setSamplesPerBatch(args.samples)
-        planner.setRewireFactor(args.rewire)
+        planner.setSamplesPerBatch(200)
+        planner.setRewireFactor(20.)
         return planner
     elif plannerType.lower() == "fmtstar":
         return og.FMT(si)
