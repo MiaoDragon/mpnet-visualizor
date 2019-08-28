@@ -55,7 +55,7 @@ def eval_tasks(mpNet, test_data, true_file, path_folder, env_idx, path_idx, IsIn
                         step_sz = 1.2
                     elif (t > 3):
                         step_sz = 0.5
-                    path = neural_replan2(mpNet, path, obc[i], obs[i], IsInCollision, \
+                    path = neural_replan(mpNet, path, obc[i], obs[i], IsInCollision, \
                                          normalize_func, unnormalize_func, t==0, step_sz=step_sz)
                     #print('returned path:')
                     #print(path)
